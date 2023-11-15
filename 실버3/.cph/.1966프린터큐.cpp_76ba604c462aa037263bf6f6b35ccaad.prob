@@ -1,0 +1,1 @@
+{"name":"Local: 1966프린터큐","url":"d:\\대학\\코딩\\cplusplus\\백준\\실버3\\1966프린터큐.cpp","tests":[{"id":1695554450315,"input":"3\n1 0\n5\n4 2\n1 2 3 4\n6 0\n1 1 9 1 1 1","output":"1\n2\n5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\대학\\코딩\\cplusplus\\백준\\실버3\\1966프린터큐.cpp","group":"local","local":true}
