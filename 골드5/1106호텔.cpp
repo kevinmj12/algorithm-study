@@ -15,6 +15,8 @@ int main(){
     int moneyAndPeople[n][2];
     int minMoney = INT_MAX;
     int minPeople;
+
+    // 입력을 받으면서 가장 적은 금액과 그때의 사람을 저장
     for (int i = 0; i < n; i++){
         cin >> moneyAndPeople[i][0] >> moneyAndPeople[i][1];
         if (moneyAndPeople[i][0] < minMoney){
@@ -38,6 +40,7 @@ int main(){
         dp[i] = INT_MAX;
     }
     
+    // 
     for (int i = minPeople+1; i <= c; i++){
         for (int j = 0; j < n; j++){
             int tmp = i - moneyAndPeople[j][1];
