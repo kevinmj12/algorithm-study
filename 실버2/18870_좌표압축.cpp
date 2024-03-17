@@ -1,49 +1,25 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int quickPartition(int* n, int start, int end){
-    int pivot = n[start];
-    int i = start;
-    int j = end;
-
-    while (i < j){
-        while (pivot < n[j]){
-            j--;
-        }
-        while (i < j && pivot >= n[i]){
-            i++;
-        }
-        swap(n[i], n[j]);
-    }
-    n[start] = n[i];
-    n[i] = pivot;
-    return i;
-}
-
-void quickSort(int* n, int start, int end){
-    if (start >= end){
-        return;
-    }
-    int p = quickPartition(n, start, end);
-    quickSort(n, start, p-1);
-    quickSort(n, p+1, end);
-}
-
 int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
-
     int N;
     cin >> N;
 
-    int* numList = new int[N];
+    vector<int> numArr1;
+    vector<int> numArr2;
     for (int i = 0; i < N; i++){
-        cin >> numList[i];
+        int x;
+        cin >> x;
+
+        numArr1.push_back(x);
+        numArr2.push_back(x);
     }
 
-    quickSort(numList, 0, N);
-
+    sort(numArr1.begin(), numArr1.end());
+    numArr1.erase(unique(numArr1.begin(), numArr1.end()), numArr1.end());
     for (int i = 0; i < N; i++){
-        cout << numList[i] << " ";
+        cout << lower_bound(numArr1.begin(), numArr1.end(), numArr2[i]) - numArr1.begin() << " ";
     }
 }

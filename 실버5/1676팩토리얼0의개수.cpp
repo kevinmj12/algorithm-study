@@ -1,32 +1,20 @@
 #include <iostream>
+using namespace std;
 
 int main(){
     int n;
-    scanf("%d", &n);
-    int countTwo = 0, countFive = 0;
-    for (int i = 1; i < n+1; i++){
+    cin >> n;
+
+    // n!을 소인수분해하여 5의 개수를 셈
+    // 5의 개수가 곧 뒤에서부터 처음 0이 아닌 숫자가 나올 때까지의 개수임
+    int countFive = 0;
+    for (int i = 1; i <= n; i++){
         int k = i;
-        while (true){
-            if (k % 2 == 0){
-                countTwo++;
-                k /= 2;
-            }
-            else{
-                break;
-            }
+        while (!(k % 5)){
+            countFive++;
+            k /= 5;
         }
-        while (true){
-            if (k % 5 == 0){
-                countFive++;
-                k /= 5;
-            }
-            else{
-                break;
-            }
-        }
-        
     }
-    int answer = countTwo<countFive?countTwo:countFive;
-    
-    printf("%d", answer);
+
+    cout << countFive;
 }
