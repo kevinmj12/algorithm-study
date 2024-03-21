@@ -16,7 +16,7 @@ void resetVisited(){
 void moveGear(int n, int d){
     // 방문 처리
     visited[n] = true;
-    // DFS로 다음 회전할 기어들을 추가
+    // 다음 회전할 기어들을 추가
     if (n >= 1 && gears[n][6] != gears[n-1][2] && !visited[n-1]){
         moveGear(n-1, -d);
     }
