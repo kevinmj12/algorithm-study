@@ -31,8 +31,8 @@ int main(){
                 dp[i][j][1]++;
             }
             else{
-                // 맨 처음에 i=1일 때 2번 나무에 자두가 떨어진다면 카운트 X
-                if (i == 1 && j == 1){
+                // 맨 처음에 j=1일 때 2번 나무에 자두가 떨어진다면 카운트 X
+                if (j == 1){
                     continue;
                 }
                 dp[i][j][2]++;
@@ -40,9 +40,5 @@ int main(){
         }
     }
 
-    int answer = 0;
-    for (int j = 1; j <= w+1; j++){
-        answer = max(answer, max(dp[t][j][1], dp[t][j][2]));
-    }
-    cout << answer;
+    cout << max(dp[t][w+1][1], dp[t][w+1][2]);
 }
