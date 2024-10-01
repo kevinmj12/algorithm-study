@@ -68,17 +68,18 @@ void calculateCase(vector<vector<int>> dice, vector<int> selectedDice, int diceI
 int binarySearch(int target, vector<int> vec){
     int left = 0, right = vec.size()-1;
     
-    while (left <= right){
-        int mid = (left + right) / 2;
+    return lower_bound(vec.begin(), vec.end(), target) - vec.begin();
+//     while (left < right){
+//         int mid = (left + right) / 2;
     
-        if (vec[mid] < target){ 
-            left = mid+1;
-        }
-        else{
-            right = mid-1;
-        }
-    }
-    return left;
+//         if (vec[mid] < target){ 
+//             left = mid+1;
+//         }
+//         else{
+//             right = mid;
+//         }
+//     }
+//     return right;
 }
 
 
