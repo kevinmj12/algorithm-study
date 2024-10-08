@@ -16,10 +16,6 @@ int main(){
 
     int answer = 0;
 
-    if (weights[0] != 1){
-        cout << 1;
-        return 0;
-    }
     for (int i = 0; i < n; i++){
         if (weights[i] <= answer+1){
             answer += weights[i];
