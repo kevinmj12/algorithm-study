@@ -6,15 +6,11 @@ WHERE (
         SELECT CODE
         FROM SKILLCODES
         WHERE NAME IN ("Python")
-    ) = (SELECT CODE
-        FROM SKILLCODES
-        WHERE NAME IN ("Python")) OR
+    ) OR
     SKILL_CODE & (
         SELECT CODE
         FROM SKILLCODES
         WHERE NAME IN ("C#")
-    ) = (SELECT CODE
-        FROM SKILLCODES
-        WHERE NAME IN ("C#"))
+    )
 )
 ORDER BY ID ASC;
