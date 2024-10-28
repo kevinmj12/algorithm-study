@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-bool answer[6562][6562];
+bool answer[2188][2188];
 
 void solve(int n, int y, int x){
     if (n == 3){
@@ -10,7 +10,7 @@ void solve(int n, int y, int x){
         answer[y][x+1] = true;
         answer[y][x+2] = true;
         answer[y+1][x] = true;
-        // 빈 칸
+        // 가운데 빈 칸
         answer[y+1][x+2] = true;
         answer[y+2][x] = true;
         answer[y+2][x+1] = true;
