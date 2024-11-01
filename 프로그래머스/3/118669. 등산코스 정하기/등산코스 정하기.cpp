@@ -1,28 +1,26 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <iostream>
 #include <set>
 
 #define MAX_S 50001
 #define MAX_I 10000001
-
 
 using namespace std;
 
 set<int> summitsSet;
 int answerS = 0;
 int answerI = MAX_I;
-int djIntensity[MAX_S];
 
 vector<pair<int, int>> graph[MAX_S];
-vector<int> connectedSpots;
 bool visited[MAX_S];
+int dijkIntensity[MAX_S];
+vector<int> connectedSpots;
 
 void reset(int n){
     for (int i = 1; i <= n; i++){
         visited[i] = false;
-        djIntensity[i] = MAX_I;
+        dijkIntensity[i] = MAX_I;
     }
     connectedSpots.clear();
 }
@@ -40,7 +38,7 @@ pair<int, int> findMinIntensity(int n, int spot){
     
     for (int i = 0; i < connectedSpots.size(); i++){
         int nextS = connectedSpots[i];
-        int nextI = djIntensity[nextS];
+        int nextI = dijkIntensity[nextS];
         
         if (!visited[nextS] && nextI < minIntensity){
             minIntensity = nextI;
@@ -58,10 +56,10 @@ void updateIntensity(int spot, int intensity){
         int nextS = graph[spot][i].first;
         int nextI = graph[spot][i].second;
         
-        if (djIntensity[nextS] == MAX_I){
+        if (dijkIntensity[nextS] == MAX_I){
             connectedSpots.push_back(nextS);
         }
-        djIntensity[nextS] = min(djIntensity[nextS], max(intensity, nextI));
+        dijkIntensity[nextS] = min(dijkIntensity[nextS], max(intensity, nextI));
     }
 }
 
