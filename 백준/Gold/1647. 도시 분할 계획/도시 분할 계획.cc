@@ -8,7 +8,6 @@ using namespace std;
 
 vector<vector<int>> graph;
 int root[MAX_N];
-pair<int, int> costs[MAX_N];
 
 int Find(int a){
     if (a == root[a]){
@@ -30,8 +29,8 @@ void Union(int a, int b){
 }
 
 int main(){
-    // ios::sync_with_stdio(false);
-    // cin.tie(NULL); cout.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
 
     int n, m;
     cin >> n >> m;
@@ -65,18 +64,7 @@ int main(){
         paths++;
 
         totalCosts += c;
-        // costs[a].first += c;
-        // costs[a].second++;
-        // costs[b].first += c;
-        // costs[b].second++;
     }
-
-    // int maxCost = 0;
-    // for (int i = 1; i <= n; i++){
-    //     if (costs[i].second <= 2){
-    //         maxCost = max(maxCost, costs[i].first);
-    //     }
-    // }
 
     cout << totalCosts;
 }
