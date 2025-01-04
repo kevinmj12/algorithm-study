@@ -10,6 +10,15 @@ function solution(points, routes) {
       graph.push(row);
     }
     
+    const resetGraph = () => {
+        for (let i = 0; i < graph.length; i++) {
+          for (let j = 0; j < graph[i].length; j++) {
+              graph[i][j] = 0;
+          }
+        }
+    }
+        
+    
     var routesCur = [];
     for (let i = 0; i < routes.length; i++){
         var tmp = [];
@@ -67,11 +76,5 @@ function solution(points, routes) {
     return answer;
 }
 
-function resetGraph(graph){
-    for (let i = 0; i < graph.length; i++) {
-      for (let j = 0; j < graph[i].length; j++) {
-          graph[i][j] = 0;
-      }
-    }
-}
+
 
