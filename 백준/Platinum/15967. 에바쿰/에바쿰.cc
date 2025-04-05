@@ -8,61 +8,60 @@ ll nums[NUMBER_MAX+1];
 ll segTree[4*NUMBER_MAX+1];
 ll lazy[4*NUMBER_MAX+1];
 
-ll init(int left, int right, int node){
-    if (left == right){
-        return segTree[node] = nums[left];
+ll init(int start, int end, int node){
+    if (start == end){
+        return segTree[node] = nums[start];
     }
-    int mid = left + (right - left) / 2;
-    return segTree[node] = init(left, mid, node*2) + init(mid+1, right, node*2+1);
+    int mid = start + (end - start) / 2;
+    return segTree[node] = init(start, mid, node*2) + init(mid+1, end, node*2+1);
 }
 
-void updateLazy(int left, int right, int node){
+void updateLazy(int start, int end, int node){
     if (lazy[node] != 0){
-        segTree[node] += (right - left + 1) * lazy[node];
-        if (left == right){
-            return;
+        segTree[node] += (end - start + 1) * lazy[node];
+        if (start != end){
+            lazy[node*2] += lazy[node];
+            lazy[node*2+1] += lazy[node];
         }
-        lazy[node*2] += lazy[node];
-        lazy[node*2+1] += lazy[node];
         lazy[node] = 0;
     }
 }
 
-void update(int left, int right, int node, int b, int c, int d){
-    updateLazy(left, right, node);
+void update(int start, int end, int node, int b, int c, int d){
+    updateLazy(start, end, node);
     // 범위 안에 없는 경우
-    if (c < left || right < b){
+    if (c < start || end < b){
         return;
     }
-    // [b, c] 안에 [left, right]가 포함되는 경우 lazy 업데이트
-    else if (b <= left && right <= c){
-        segTree[node] += (right - left + 1) * d;
-        if (left != right){
+    // [b, c] 안에 [start, end]가 포함되는 경우 lazy 업데이트
+    else if (b <= start && end <= c){
+        segTree[node] += (end - start + 1) * d;
+        if (start != end){
             lazy[node * 2] += d;
             lazy[node * 2 + 1] += d;
         }
     }
     else{
-        int mid = left + (right - left) / 2;
-        update(left, mid, node*2, b, c, d);
-        update(mid+1, right, node*2+1, b, c, d);
+        int mid = start + (end - start) / 2;
+        update(start, mid, node*2, b, c, d);
+        update(mid+1, end, node*2+1, b, c, d);
         segTree[node] = segTree[node*2]+segTree[node*2+1];
     }
 }
 
-ll sum(int left, int right, int node, int l, int r){
-    updateLazy(left, right, node);
+ll sum(int start, int end, int node, int left, int right){
+    updateLazy(start, end, node);
     // 범위 안에 없는 경우
-    if (r < left || right < l){
+    if (right < start || end < left){
         return 0;
     }
     // 범위 안에 있는 경우
-    if (l <= left && right <= r){
+    if (left <= start && end <= right){
         return segTree[node];
     }
     // 범위에 걸쳐 있는 경우
-    int mid = left + (right - left) / 2;
-    return sum(left, mid, node*2, l, r) + sum(mid+1, right, node*2+1, l, r);
+    int mid = start + (end - start) / 2;
+    return sum(start, mid, node*2, left, right) + sum(mid+1, end, node*2+1, left, right);
 }
 
 int main(){
