@@ -27,7 +27,7 @@ void updateLazy(int start, int end, int node){
     }
 }
 
-void update(int start, int end, int node, int b, int c, int d){
+void update(int start, int end, int node, int b, int c, long long d){
     updateLazy(start, end, node);
     // 범위 안에 없는 경우
     if (c < start || end < b){
@@ -37,9 +37,10 @@ void update(int start, int end, int node, int b, int c, int d){
     else if (b <= start && end <= c){
         segTree[node] += (end - start + 1) * d;
         if (start != end){
-            lazy[node * 2] += d;
-            lazy[node * 2 + 1] += d;
+            lazy[node*2] += d;
+            lazy[node*2+1] += d;
         }
+        return;
     }
     else{
         int mid = start + (end - start) / 2;
@@ -80,9 +81,6 @@ int main(){
             ll d;
             cin >> d;
             update(1, N, 1, b, c, d);
-            for (int j = b; j <= c; j++){
-                nums[j] += d;
-            }
         }
         else{
             cout << sum(1, N, 1, b, c) << "\n";
