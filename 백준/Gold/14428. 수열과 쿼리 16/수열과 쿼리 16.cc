@@ -69,17 +69,10 @@ int update(int left, int right, int target, int index){
 void command1(int a, int b){
     nums[a] = b;
     update(1, N, a, 1);
-
-    // cout << endl;
-    // for (int i = 1; i <= 4*N; i++){
-    //     cout << segTree[i] << " "; 
-    // }
-    // cout << endl;
 }
 
 void command2(int a, int b){
     int answer = find(1, N, a, b, 1);
-    // cout << "   --" << 2 << " " << a << " " << b << ": " << answer << "\n";
     cout << answer << "\n";
 }
 
