@@ -2,8 +2,7 @@
 #include <cmath>
 using namespace std;
 
-long long counts[11][10];
-long long answer[10];
+int answer[10];
 
 void solve(int n){
     string str = to_string(n);
