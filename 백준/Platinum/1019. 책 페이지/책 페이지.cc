@@ -8,13 +8,16 @@ void solve(int n){
     string str = to_string(n);
     int length = str.length();
     
+    // 1번째 자리 처리
     int d = pow(10, length-1);
     int q = n / d;
 
-    // 1번째 자리 처리
-    for (int i = 1; i < q; i++){
+    // 0 ~ target-1
+    for (int i = 0; i < q; i++){
         answer[i] += d;
     }
+
+    // target
     answer[q] += (n % d) + 1;
 
     // 2 ~ L-1번째 자리 처리
@@ -25,25 +28,14 @@ void solve(int n){
         int left = stoi(str.substr(0, index));
         int right = stoi(str.substr(index+1));
 
-        // target이 0인 경우
-        if (target == 0){
-            answer[0] += (left-1) * d + right+1;
-            for (int i = target+1; i <= 9; i++){
-                answer[i] += left * d;
-            }
-            d /=10;
-            continue;
-        }
-        // 0
-        if (0 < target){
-            answer[0] += left * d;
-        }
-        // 1 ~ target-1
-        for (int i = 1; i < target; i++){
+        // 0 ~ target-1
+        for (int i = 0; i < target; i++){
             answer[i] += (left+1) * d;
         }
+        
         // target
         answer[target] += left * d + right+1;
+
         // target+1 ~ 9
         for (int i = target+1; i <= 9; i++){
             answer[i] += left * d;
@@ -57,15 +49,24 @@ void solve(int n){
         int target = str[index] - '0';
         int left = stoi(str.substr(0, index));
         
-        answer[0] += left;
-        for (int i = 1; i <= target; i++){
+        // 0 ~ target
+        for (int i = 0; i <= target; i++){
             answer[i] += left+1;
         }
+
+        // target+1 ~ 9
         for (int i = target+1; i <= 9; i++){
             answer[i] += left;
         }
     }
     
+    // 0 제거 작업
+    d = pow(10, length-1);
+    for (int i = 0; i < length; i++){
+        answer[0] -= d;
+        d /= 10;
+    }
+
     for (int i = 0; i <= 9; i++){
         cout << answer[i] << " ";
     }
