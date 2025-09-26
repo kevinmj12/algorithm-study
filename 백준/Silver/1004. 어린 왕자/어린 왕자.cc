@@ -32,7 +32,7 @@ int main(){
             bool startInside = isInside(x1, y1, cx, cy, r);
             bool endInside = isInside(x2, y2, cx, cy, r);
 
-            if ((startInside || endInside) && !(startInside && endInside)){
+            if (startInside ^ endInside){
                 answer++;
             }
         }
