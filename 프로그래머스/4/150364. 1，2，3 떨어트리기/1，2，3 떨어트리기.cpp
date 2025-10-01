@@ -7,8 +7,11 @@ using namespace std;
 vector<int> nodes[102];
 int nextNode[102];
 int value[102];
+
 vector<int> trace[102];
 vector<int> sequence;
+int seqIndex[102];
+
 
 vector<int> solution(vector<vector<int>> edges, vector<int> target) {
     vector<int> answer;
@@ -74,13 +77,10 @@ vector<int> solution(vector<vector<int>> edges, vector<int> target) {
     if (!flag){
         return {-1};
     }
-    // value 배열을 trace[s]의 index로 활용
-    for (int i = 1; i <= edges.size()+1; i++){
-        value[i] = 0;
-    }
+    
     for (int s: sequence){
-        answer.push_back(trace[s][value[s]]);
-        value[s]++;
+        answer.push_back(trace[s][seqIndex[s]]);
+        seqIndex[s]++;
     }
     
     return answer;
