@@ -1,42 +1,41 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <sstream>
-#include <set>
+#include <iostream>
 
 using namespace std;
-
 
 vector<int> solution(vector<string> id_list, vector<string> report, int k) {
     vector<int> answer(id_list.size(), 0);
     
-    vector<set<int>> reported(id_list.size()+1, set<int>());
+    vector<vector<int>> reportCnt(id_list.size(), vector<int>());
+    vector<vector<bool>> reported(id_list.size(), vector<bool>(id_list.size(), false));
     
-    int idx = 1;
     map<string, int> idMap;
-    map<int, string> idxMap;
     
-    for (string id: id_list){
-        idMap.insert({id, idx});
-        idxMap.insert({idx, id});
-        idx++;
+    for (int i = 0; i < id_list.size(); i++){
+        idMap.insert({id_list[i], i});
     }
     
-    for (string r: report){
-        stringstream ss(r);
-        vector<string> words;
-        string word;
-        
-        while (getline(ss, word, ' ')){
-            words.push_back(word);
+    for (string r : report){
+        int i = 0;
+        while (r[i] != ' '){
+            i++;
         }
-        reported[idMap[words[1]]].insert(idMap[words[0]]);
+        
+        int first = idMap[r.substr(0, i)];
+        int second = idMap[r.substr(i+1)];
+        
+        if (!reported[first][second]){
+            reportCnt[second].push_back(first);
+            reported[first][second] = true;
+        }
     }
     
-    for (int i = 1; i < idx; i++){
-        if (reported[i].size() >= k){
-            for (int j: reported[i]){
-                answer[j-1]++;
+    for (int i = 0; i < id_list.size(); i++){
+        if (reportCnt[i].size() >= k){
+            for (int j = 0; j < reportCnt[i].size(); j++){
+                answer[reportCnt[i][j]]++;
             }
         }
     }
