@@ -20,7 +20,7 @@ pair<int, int> find(int r, int c){
     if (root[r][c] == make_pair(r, c)){
         return {r, c};
     }
-    return find(root[r][c].first, root[r][c].second);
+    return root[r][c] = find(root[r][c].first, root[r][c].second);
 }
 
 void merge(int r1, int c1, int r2, int c2){  
@@ -61,12 +61,8 @@ void updateCel(vector<string> words){
 }
 
 void mergeCel(vector<string> words){
-    // 같은 셀일 경우 무시
     int r1 = stoi(words[1]), c1 = stoi(words[2]), r2 = stoi(words[3]), c2 = stoi(words[4]);
-    if (r1 == r2 && c1 == c2){
-        return;
-    }
-    // 병합   
+   
     merge(r1, c1, r2, c2);
 }
 
