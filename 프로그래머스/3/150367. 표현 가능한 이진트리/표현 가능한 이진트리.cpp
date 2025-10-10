@@ -1,74 +1,61 @@
 #include <string>
 #include <vector>
-#include <cmath>
 #include <algorithm>
 #include <iostream>
 
 using namespace std;
 
-string to_binary(long long l){
-    string rtn = "";
-    while (l > 0){
-        rtn += (l % 2) + '0';
-        l >>= 1;
+bool dfs(int left, int right, bool b, string s){
+    if (left > right){
+        return true;
     }
-    reverse(rtn.begin(), rtn.end());
-    return rtn;
-}
-
-bool canExpress(string str){
-    int depth = 1;
-    while (true){
-        int tmp = pow(2, depth);
-        if (tmp > str.length()){
-            if (str[str.length()/2] == '1'){
-                return true;    
-            }
-            else{
-                return false;
-            }
-        }
-        
-        for (int i = tmp/2-1; i < str.length(); i += tmp*2){
-            int left = i;
-            int right = i+tmp;
-
-            if (str[left] == '1' || str[right] == '1'){
-                if (str[(left + right)/2] == '0'){
-                    return false;
-                }
-            }
-        }
-        depth++;
+    
+    int mid = left + (right - left) / 2;
+    
+    if (b == false && s[mid] == '1'){
+        return false;
+    }
+    else{
+        return (dfs(left, mid-1, s[mid] == '1', s) && dfs(mid+1, right, s[mid] == '1', s));
     }
 }
 
 vector<int> solution(vector<long long> numbers) {
     vector<int> answer;
     
-    for (int i = 0; i < numbers.size(); i++){
-        bool flag = false;
-        string str = to_binary(numbers[i]);        
-        
-        // 앞뒤로 0을 붙여 문자열의 길이가 (2^n)-1이 되도록 설정
-        int tmp = 1;
-        while (true){
-            if (tmp > str.length()){
-                break;
-            }
-            tmp *= 2;
+    vector<string> binaryNums;
+    for (long long n : numbers){
+        string binaryNum = "";
+        while (n){
+            binaryNum += (n % 2)+'0';
+            n /= 2;
         }
         
-        string newStr = string(tmp-1-str.length(), '0') + str;
-
-        // 이진 트리로 만들 수 있는지를 체크
-        if (canExpress(newStr)){
+        binaryNums.push_back(binaryNum);
+    }
+    
+    for (string s: binaryNums){
+        int l = 1;
+        int sl = s.length();
+        while (sl > l){
+            l = (l+1)*2-1;
+        }
+        while (l > sl){
+            s += '0';
+            sl++;
+        }
+        reverse(s.begin(), s.end());
+        
+        bool flag = dfs(0, sl-1, true, s);
+        
+        if (flag){
             answer.push_back(1);
         }
         else{
             answer.push_back(0);
         }
-        
     }
+    
+    
     return answer;
 }
