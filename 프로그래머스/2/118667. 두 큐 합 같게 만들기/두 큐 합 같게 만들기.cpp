@@ -8,10 +8,10 @@ using namespace std;
 int solve(vector<int> q1, vector<int> q2, long sum1, long sum2){
     int i1 = 0, i2 = 0;
     int cnt = 0;
-    int size = q1.size() + q2.size()+1;
+    int size = q1.size() + q2.size()+2;
     
     while (sum1 != sum2){
-        if (cnt > size){
+        if (cnt >= size){
             return -1;
         }
         if (sum1 > sum2){
