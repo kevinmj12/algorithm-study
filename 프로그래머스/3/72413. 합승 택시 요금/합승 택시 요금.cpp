@@ -54,22 +54,21 @@ int solution(int n, int s, int a, int b, vector<vector<int>> fares) {
         path[fare[1]].push_back({fare[0], fare[2]});
     }
     
-    for (int i = 1; i < n; i++){
-        for (int j = i+1; j <= n; j++){
-            minFee[i][j] = MAX_FEE;
-            minFee[j][i] = MAX_FEE;
-        }
+    for (int i = 1; i <= n; i++){
+        minFee[s][i] = MAX_FEE;
+        minFee[a][i] = MAX_FEE;
+        minFee[b][i] = MAX_FEE;
     }
     
-    for (int i = 1; i < n; i++){
-        dijkstra(n, i, path);
-    }
+    dijkstra(n, s, path);
+    dijkstra(n, a, path);
+    dijkstra(n, b, path);
     
     for (int i = 1; i <= n; i++){
         int tmpFee = 0;
         tmpFee += minFee[s][i];
-        tmpFee += minFee[i][a];
-        tmpFee += minFee[i][b];
+        tmpFee += minFee[a][i];
+        tmpFee += minFee[b][i];
         
         answer = min(answer, tmpFee);
     }
