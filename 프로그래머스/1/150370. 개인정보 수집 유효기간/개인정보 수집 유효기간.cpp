@@ -1,58 +1,63 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 
 using namespace std;
-
-map<char, int> termsMap;
 
 struct Date{
     int year;
     int month;
-    int day;
+    int date;
+    
     Date(){
         year = 0;
         month = 0;
-        day = 0;
+        date = 0;
+    }
+    Date(string s){
+        year = stoi(s.substr(0, 4));
+        month = stoi(s.substr(5, 2));
+        date = stoi(s.substr(8, 2));
     }
     Date(int y, int m, int d){
         year = y;
         month = m;
-        day = d;
-    }
-    Date(string str){
-        year = stoi(str.substr(0, 4));
-        month = stoi(str.substr(5, 7));
-        day = stoi(str.substr(8, 10));
+        date = d;
     }
 };
 
+void addMonth(Date& d, int m){
+    d.month += m;
+    d.date--;
+    if (d.date == 0){
+        d.date = 28;
+        d.month--;
+    }
+
+    if (d.month >= 13){
+        d.year += (d.month-1) / 12;
+        d.month = (d.month-1) % 12 + 1;
+    }
+}
+
 vector<int> solution(string today, vector<string> terms, vector<string> privacies) {
     vector<int> answer;
-    Date todayD = Date(today);
     
-    for (string t: terms){
-        termsMap[t[0]] = (stoi(t.substr(2)));
+    Date t = Date(today);
+    map<char, int> termsMap;
+    for (string term: terms){
+        termsMap.insert({term[0], stoi(term.substr(2))});
     }
     
     for (int i = 0; i < privacies.size(); i++){
         string p = privacies[i];
-        Date d = Date(p);
-        int term = termsMap[p[11]];
+        Date d = Date(p.substr(0, 10));
+        addMonth(d, termsMap[p[11]]);
         
-        int y = term / 12;
-        d.year += y;
-        term %= 12;
-        
-        d.month += term;
-        if (d.month > 12){
-            d.month -= 12;
-            d.year++;
-        }
-        
-        if (d.year < todayD.year || 
-           (d.year == todayD.year && d.month < todayD.month) ||
-           (d.year == todayD.year && d.month == todayD.month && d.day <= todayD.day)){
+        if (d.year < t.year ||
+           (d.year == t.year && d.month < t.month) || 
+           (d.year == t.year && d.month == t.month && d.date < t.date)){
             answer.push_back(i+1);
         }
     }
