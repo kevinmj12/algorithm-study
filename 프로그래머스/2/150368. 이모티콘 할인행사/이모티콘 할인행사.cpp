@@ -1,58 +1,55 @@
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <iostream>
 
-int discount[4] = {10, 20, 30, 40};
-int maxPeople = 0;
-int maxMoney = 0;
 using namespace std;
 
-void backtracking(int idx, int m, vector<int> discounts, vector<vector<int>> users, vector<int> emoticons){
-    if (idx == m){
-        vector<int> dcEmoticons;
-        int people = 0, money = 0;
-        
-        for (int i = 0; i < m; i++){
-            dcEmoticons.push_back(emoticons[i] / 100 * (100 - discounts[i]));
-        }
-        for (int i = 0; i < users.size(); i++){
-            int tmpMoney = 0;
-            for (int j = 0; j < discounts.size(); j++){
-                if (users[i][0] <= discounts[j]){
-                    tmpMoney += dcEmoticons[j];
-                }
-            }
-            // 플러스 서비스 가입 여부 확인
-            if (tmpMoney >= users[i][1]){
-                people++;
-            }
-            else{
-                money += tmpMoney;
+vector<int> answer = {0, 0};
+int dRate[4] = {10, 20, 30, 40};
+
+pair<int, int> simulate(vector<vector<int>> users, vector<int> emoticons, vector<int> discounts){
+    int plusCnt = 0;
+    int totalPrice = 0;
+    
+    for (vector<int> user: users){
+        int price = 0;
+        int d = user[0];
+        int plusPrice = user[1];
+        for (int i = 0; i < emoticons.size(); i++){
+            if (discounts[i] >= d){
+                price += emoticons[i] / 100 * (100-discounts[i]);
             }
         }
-        if (people > maxPeople){
-            maxPeople = people;
-            maxMoney = money;
+        if (price >= plusPrice){
+            plusCnt++;
         }
-        else if (people == maxPeople){
-            maxMoney = max(maxMoney, money);
+        else{
+            totalPrice += price;
+        }
+    }
+    
+    return {plusCnt, totalPrice};
+}
+
+void solve(vector<vector<int>> users, vector<int> emoticons, vector<int> discounts){
+    if (discounts.size() == emoticons.size()){
+        pair<int, int> result = simulate(users, emoticons, discounts);
+        if (result.first > answer[0] ||
+           result.first == answer[0] && result.second > answer[1]){
+            answer[0] = result.first;
+            answer[1] = result.second;
         }
         return;
     }
+    
     for (int i = 0; i < 4; i++){
-        discounts.push_back(discount[i]);
-        backtracking(idx+1, m, discounts, users, emoticons);
+        discounts.push_back(dRate[i]);
+        solve(users, emoticons, discounts);
         discounts.pop_back();
     }
 }
 
 vector<int> solution(vector<vector<int>> users, vector<int> emoticons) {
-    vector<int> answer;
+    solve(users, emoticons, {});    
     
-    backtracking(0, emoticons.size(), {}, users, emoticons);
-    
-    answer.push_back(maxPeople);
-    answer.push_back(maxMoney);
     return answer;
 }
