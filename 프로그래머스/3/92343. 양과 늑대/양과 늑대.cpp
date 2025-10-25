@@ -1,49 +1,60 @@
 #include <string>
 #include <vector>
-#include <queue>
+#include <algorithm>
+#include <iostream>
+#include <algorithm>
+#include <deque>
 
 using namespace std;
 
 vector<int> board[18];
-int parent[18];
 bool visited[18];
+int answer = 1;
 
-int sheep = 0;
-int wolf = 0;
-int answer = 0;
-
-void dfs(int cur, vector<int> path, int s, int w, vector<int> info){
+void solve(vector<int> info, vector<int> next, int sCnt, int wCnt, int cur){
     if (info[cur] == 0){
-        s++;
+        sCnt++;
     }
     else{
-        w++;
-        if (w >= s){
-            return;
+        wCnt++;
+    }
+    if (wCnt >= sCnt){
+        return;
+    }
+    answer = max(answer, sCnt);
+    
+    visited[cur] = true;
+    for (int i = 0; i < board[cur].size(); i++){
+        next.push_back(board[cur][i]);
+    }
+    
+    for (int i = 0; i < next.size(); i++){
+        int n = next[i];
+        if (visited[n]){
+            continue;
+        }
+        if (info[i] == 0){
+            solve(info, next, sCnt, wCnt, n);
+        }
+        else{
+            solve(info, next, sCnt, wCnt, n);
         }
     }
-    answer = max(answer, s);
     
-    for (int next: board[cur]){
-        path.push_back(next);
-    }
-    
-    for (int i = 0; i < path.size(); i++){
-        int next = path[i];
-        if (!visited[next]){
-            visited[next] = true;
-            dfs(next, path, s, w, info);
-            visited[next] = false;
-        }
+    visited[cur] = false;
+    for (int i = 0; i < board[cur].size(); i++){
+        next.pop_back();
     }
 }
 
-int solution(vector<int> info, vector<vector<int>> edges) { 
+int solution(vector<int> info, vector<vector<int>> edges) {    
     for (int i = 0; i < edges.size(); i++){
-        board[edges[i][0]].push_back(edges[i][1]);
+        int p = edges[i][0];
+        int s = edges[i][1];
+        board[p].push_back(s);
     }
     
-    dfs(0, {}, 0, 0, info);
+    solve(info, {}, 0, 0, 0);
     
     return answer;
 }
