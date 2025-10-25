@@ -1,59 +1,60 @@
 #include <string>
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
-int maxAnswer = 0;
 vector<int> answer;
+int maxRScore = 0;
 
-void backtracking(int n, vector<int> info, int i, int aScore, int lScore, vector<int> v){
-    if (i == 11){
-        if (n){
-            v.back() += n;
-        }
-        
-        if (lScore - aScore > maxAnswer){
-            maxAnswer = lScore-aScore;
-            answer = v;
-        }
-        else if (maxAnswer > 0 && lScore - aScore == maxAnswer){
-            int right = 10;
-            while (right >= 0){
-                if (v[right] > answer[right]){
-                    answer = v;
-                    return;
+void solve(int n, vector<int> info, int rScore, int aScore, vector<int> ryan){
+    if (ryan.size() == 10){
+        if (rScore > aScore){
+            ryan.push_back(n);
+            if (rScore - aScore > maxRScore){
+                maxRScore = rScore - aScore;
+                answer = ryan;
+            }
+            else if (maxRScore > 0 && rScore - aScore == maxRScore){
+                for (int i = 10; i >= 0; i--){
+                    if (ryan[i] > answer[i]){
+                        answer = ryan;
+                        return;
+                    }
+                    else if (ryan[i] < answer[i]){
+                        return;
+                    }
                 }
-                else if (v[right] < answer[right]){
-                    return;
-                }
-                right--;
             }
         }
         return;
     }
-
-    if (n > info[i]){
-        vector<int> v2 = v;
-        v2.push_back(info[i]+1);
-        backtracking(n-(info[i]+1), info, i+1, aScore, lScore+10-i, v2);
-    }
     
-    vector<int> v1 = v;
-    v1.push_back(0);
-    if (info[i] == 0){
-        backtracking(n, info, i+1, aScore, lScore, v1);
+    int round = ryan.size();
+    
+    // 화살을 안맞추는 경우
+    ryan.push_back(0);
+    
+    if (info[round] > 0){
+        solve(n, info, rScore, aScore + (10-round), ryan);    
     }
     else{
-        backtracking(n, info, i+1, aScore+10-i, lScore, v1);
+        solve(n, info, rScore, aScore, ryan);
+    }
+    
+    // 화살을 맞춰 점수를 가져오는 경우
+    if (n >= info[round]+1){
+        ryan.pop_back();
+        ryan.push_back(info[round]+1);
+        solve(n-(info[round]+1), info, rScore + (10-round), aScore, ryan);
     }
 }
 
 vector<int> solution(int n, vector<int> info) {
-    backtracking(n, info, 0, 0, 0, {});
+    solve(n, info, 0, 0, {});
     
-    if (maxAnswer == 0){
+    if (answer.empty()){
         answer.push_back(-1);
     }
+    
     return answer;
 }
