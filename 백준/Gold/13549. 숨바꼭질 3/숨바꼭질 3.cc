@@ -35,11 +35,11 @@ int main(){
             if (cur*2 < MAX && !visited[cur*2]){
                 dq.push_front({cur*2, val});
             }
-            if (cur > 0 && !visited[cur-1]){
-                dq.push_back({cur-1, val+1});
-            }
             if (cur+1 < MAX && !visited[cur+1]){
                 dq.push_back({cur+1, val+1});
+            }
+            if (cur > 0 && !visited[cur-1]){
+                dq.push_back({cur-1, val+1});
             }
         }
     }
