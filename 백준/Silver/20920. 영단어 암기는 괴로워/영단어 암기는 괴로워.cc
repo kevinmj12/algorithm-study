@@ -2,72 +2,47 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <string>
+
 using namespace std;
 
-struct Word{
+struct Word {
     string name;
     int count;
-    Word(string n, int c){
-        name = n;
-        count = c;
-    }
+    Word(string n, int c) : name(n), count(c) {}
 };
 
-bool compare(Word a, Word b){
-    if (a.count > b.count){
-        return true;
-    }
-    else if (a.count < b.count){
-        return false;
-    }
-
-    if (a.name.length() > b.name.length()){
-        return true;
-    }
-    else if (a.name.length() < b.name.length()){
-        return false;
-    }
-
-    if (a.name < b.name){
-        return true;
-    }
-    else{
-        return false;
-    }
+bool compare(const Word& a, const Word& b) {
+    if (a.count != b.count) return a.count > b.count;
+    if (a.name.length() != b.name.length()) return a.name.length() > b.name.length();
+    return a.name < b.name;
 }
 
-int main(){
+int main() {
     ios::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
-    
-    map<string, int> wordMap;
-    vector<Word> wordVec;
+    cin.tie(NULL);
 
     int N, M;
     cin >> N >> M;
 
-    for (int i = 0; i < N; i++){
+    map<string, int> wordMap;
+    for (int i = 0; i < N; i++) {
         string word;
         cin >> word;
-
-        if (word.length() < M){
-            continue;
-        }
-        if (wordMap.find(word) != wordMap.end()){
-            wordMap[word]++;
-        }
-        else{
-            wordMap.insert({word, 1});
-        }
+        if (word.length() < M) continue;
+        wordMap[word]++;
     }
 
-    for (auto it = wordMap.begin(); it != wordMap.end(); it++){
-        wordVec.push_back(Word(it->first, it->second));
+    vector<Word> wordVec;
+    for (const auto& item : wordMap) {
+        wordVec.emplace_back(item.first, item.second);
     }
 
     sort(wordVec.begin(), wordVec.end(), compare);
 
-    for (Word w: wordVec){
+    for (const auto& w : wordVec) {
         cout << w.name << "\n";
     }
+
+    return 0;
 }
