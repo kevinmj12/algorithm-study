@@ -33,7 +33,7 @@ vector<bool> spread(vector<bool> nodes, vector<vector<int>> graph, int type){
 }
 
 void backtracking(vector<vector<int>> graph, int before, int round, int k,
-                vector<bool> nodes, vector<int> trace){
+                vector<bool> nodes){
     // 종료 조건
     if (round == k){
         int totalNodes = 0;
@@ -51,23 +51,17 @@ void backtracking(vector<vector<int>> graph, int before, int round, int k,
     // A를 열었다 닫음
     if (before != 1){
         nodes = spread(curNodes, graph, 1);
-        trace.push_back(1);
-        backtracking(graph, 1, round+1, k, nodes, trace);
-        trace.pop_back();
+        backtracking(graph, 1, round+1, k, nodes);
     }
     // B를 열었다 닫음
     if (before != 2){
         nodes = spread(curNodes, graph, 2);
-        trace.push_back(2);
-        backtracking(graph, 2, round+1, k, nodes, trace);
-        trace.pop_back();
+        backtracking(graph, 2, round+1, k, nodes);
     }
     // C를 열었다 닫음
     if (before != 3){
         nodes = spread(curNodes, graph, 3);
-        trace.push_back(3);
-        backtracking(graph, 3, round+1, k, nodes, trace);
-        trace.pop_back();
+        backtracking(graph, 3, round+1, k, nodes);
     }
 }
 
@@ -86,7 +80,7 @@ int solution(int n, int infection, vector<vector<int>> edges, int k) {
     vector<bool> nodes(n+1, false);
     nodes[infection] = true;
     
-    backtracking(graph, 0, 0, k, nodes, {});
+    backtracking(graph, 0, 0, k, nodes);
     
     answer = maxNode;
     
