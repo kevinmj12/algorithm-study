@@ -9,12 +9,12 @@ vector<int> solution(int m, int n, int h, int w, vector<vector<int>> drops) {
     int maxDate = 0;
     
     int INF = 500002;
-    vector<int> rain(m*n, INF);
     
+    vector<int> rain(m*n, INF);
     for (int i = 0; i < drops.size(); i++){
-        int r = drops[i][0];
-        int c = drops[i][1];
-        rain[r*n + c] = i+1;
+        int y = drops[i][0];
+        int x = drops[i][1];
+        rain[y*n + x] = i+1;
     }
     
     int newN = n - w + 1;
@@ -33,8 +33,8 @@ vector<int> solution(int m, int n, int h, int w, vector<vector<int>> drops) {
                 dq.pop_front();
             }
             
-            if(c >= w - 1){
-                minRow[r * newN + (c - w + 1)] = rain[r*n + dq.front()];
+            if (c >= w - 1){
+                minRow[r*newN + c - w + 1] = rain[r*n + dq.front()];
             }
         }
     }
@@ -42,8 +42,7 @@ vector<int> solution(int m, int n, int h, int w, vector<vector<int>> drops) {
     for (int c = 0; c < newN; c++){
         deque<int> dq;
         for (int r = 0; r < m; r++){
-            int minRowVal = minRow[r*newN + c];
-            while (!dq.empty() && minRow[dq.back()*newN + c] > minRowVal){
+            while(!dq.empty() && minRow[dq.back()*newN+c] > minRow[r*newN+c]){
                 dq.pop_back();
             }
             
@@ -53,24 +52,22 @@ vector<int> solution(int m, int n, int h, int w, vector<vector<int>> drops) {
                 dq.pop_front();
             }
             
-            
-            
             if (r >= h - 1){
-                int maxValIdx = dq.front()*newN + c;
-                if (minRow[maxValIdx] > maxDate){
+                int date = minRow[dq.front()*newN + c];
+                if (date > maxDate){
                     answer = {r-h+1, c};
-                    maxDate = minRow[maxValIdx];
+                    maxDate = date;
                 }
-                else if (minRow[maxValIdx] == maxDate){
-                    if (r-h+1 < answer[0] ||
-                       r-h+1 == answer[0] && c < answer[1]){
+                else if (date == maxDate){
+                    if (r-h+1 < answer[0] || 
+                       (r-h+1 == answer[0] && c < answer[1])){
                         answer = {r-h+1, c};
-                        maxDate = minRow[maxValIdx];    
+                        maxDate = date;
                     }
                 }
             }
         }
-    }    
-    
+    }
+        
     return answer;
 }
