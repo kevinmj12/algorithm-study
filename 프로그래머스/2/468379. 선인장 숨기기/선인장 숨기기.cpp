@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
 #include <deque>
-#include <iostream>
 
 using namespace std;
 
@@ -37,20 +36,8 @@ vector<int> solution(int m, int n, int h, int w, vector<vector<int>> drops) {
             if(c >= w - 1){
                 minRow[r * newN + (c - w + 1)] = rain[r*n + dq.front()];
             }
-            
-            // cout << r << " " << c << " : ";
-            // for (int j = 0; j < dq.size(); j++){
-            //     cout << rain[r*n + dq[j]] << " ";
-            // }
-            // cout << endl;
         }
     }
-    // for (int i = 0; i < m * newN; i++){
-    //     cout << minRow[i] << " ";
-    // }
-    
-    int newM = m - h + 1;
-    vector<int> minCol(newM * n);
     
     for (int c = 0; c < newN; c++){
         deque<int> dq;
@@ -81,27 +68,9 @@ vector<int> solution(int m, int n, int h, int w, vector<vector<int>> drops) {
                         maxDate = minRow[maxValIdx];    
                     }
                 }
-            //     minCol[c * newM + r - h + 1] = dq.front();
             }
-            
-            // cout << r << " " << c << " : ";
-            // for (int j = 0; j < dq.size(); j++){
-            //     cout << minRow[dq[j]*newN + c] << " ";
-            // }
-            // cout << endl;
         }
-    }
-    
-    // for (int i = 0; i < newM * n; i++){
-    //     cout << minCol[i] << " ";
-    // }
-    // for (int i = 0; i < m * newN; i++){
-    //     cout << minRow[i] << " ";
-    // }
-    // for (int i = 0; i < newM * n; i++){
-    //     cout << minCol[i] << " ";
-    // }
-    
+    }    
     
     return answer;
 }
