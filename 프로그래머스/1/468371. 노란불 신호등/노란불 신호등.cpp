@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
-#include <iostream>
+#include <numeric>
 
 using namespace std;
 
@@ -12,9 +12,8 @@ int solution(vector<vector<int>> signals) {
     vector<int> nextChange(signals.size());
     vector<int> status(signals.size());
     
-    
     for (int i = 0; i < signals.size(); i++){
-        maxT *= (signals[i][0] + signals[i][1] + signals[i][2]);
+        maxT = lcm(maxT, signals[i][0] + signals[i][1] + signals[i][2]);
         nextChange[i] = signals[i][0];
     }
     
