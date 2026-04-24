@@ -4,8 +4,6 @@
 
 using namespace std;
 
-bool weightsGraph[1001][1001];
-
 long long solution(vector<int> weights) {
     long long answer = 0;
     
@@ -17,7 +15,7 @@ long long solution(vector<int> weights) {
     for (int i = 0; i < weights.size(); i++){
         int left = weights[i];
         
-        // 몸무게가 같은 경우
+        // 몸무게가 같은 경우 따로 처리
         weightsMap[weights[i]]--;
         answer += weightsMap[weights[i]];
         
